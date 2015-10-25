@@ -1,0 +1,25 @@
+NOTE: originally written September 2009 (I think)
+
+to compile: javac Driver.java
+to run: java Driver
+The driver instantiates a new object of the Game class called myGame.
+
+Within myGame, two new objects of the Player class will be instantiated. Here, they are called Human and Computer. Human is instantiated with the string "Player 1" for the name, and boolean = true for whether it is human. To run the game completely automated, this boolean can be set to false for both players. Each player instantiates new Board, ShipList, and AttackRecord objects. ShipList will create five Ship objects.
+
+The driver will then call the myGame.play method.
+
+Within this method, both players will place their ships. Then, a while loop will determine when one has lost. During this, the players will take turns attacking.
+
+For human ship placement, the user is prompted to enter three sets of input: 1/2 for whether placement is horizontical/vertical, an int value for the starting vertical coordinate, and an int value for the starting horizontal coordinate. If any of this does not follow the format given (i.e., something other than 1,2 is entered for horizontal/vertical orientation, or something other than an int value) an InputMismatchException will be thrown, and the user will try again.
+
+If the given input is in the correct format, the checkAvailibility method of the Board class will be called. This will determine if the ship can physically fit on the board - i.e., whether it runs into other ships or if it runs off the side of the board. If it can't fit, the user will be asked to try again; otherwise, the ship will be placed on the board.
+
+For computer ship placement, the same thing happens, though generation of input is random.
+
+For a human attack, the user will be prompted to select coordinates to target. If these coordinates are out of range of the board, the user will be prompted again. If these coordinates are within range, the isRedundant method of the AttackRecord class is called. AttackRecord essentially keeps track of all attacks made by the player. If the attack has been made before, the user will be given another chance. Otherwise, the enemy player will receive the attack. 
+
+I chose to return the attack coordinates as an object of the class Coordinates, so that two values could be returned at the same time.
+
+When receiving an attack, the checkHit method of the Board class is called. This will determine whether the attack has hit a ship or water. Depending on this, the player will then call either receiveHit or receiveMiss of the Board class. In the event that a ship is hit, the shipHit method of the ShipList class will be called. Each object of the Ship class keeps track of its own number of received hits, and its on length. shipHit will increment the number of hits received by 1.
+
+For the endgame: each Ship will determine when it is sunk, when the number of hits received equals its length. In this case, isSunk will return true. ShipList will notice when all ships return isSunk = true, and will return isLost = true. The player will return hasLost = true, and the game will break out of its while loop. The game will detect which player has lost, and display which player has lost.
